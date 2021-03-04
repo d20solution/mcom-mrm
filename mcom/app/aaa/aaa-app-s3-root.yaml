@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aaa-s3-root
+  namespace: aaa
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: aaa
+    server: https://kubernetes.default.svc
+  project: aaa-proj-s3
+  source:
+    path: s3
+    repoURL: https://github.com/d20solution/aaa-root
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
