@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: aaa-proj-s3
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: The app bundle POC project
+  sourceRepos:
+  - '*'
+
+  destinations:
+  - namespace: 'aaa'
+    server: '*'
+
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
