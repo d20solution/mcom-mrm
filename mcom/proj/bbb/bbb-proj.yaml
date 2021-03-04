@@ -12,9 +12,16 @@ spec:
 
   destinations:
   - namespace: 'bbb'
-    server: '*'
+    server: 'https://kubernetes.default.svc'
 
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
 
+  roles:
+  - name: read-only
+    description: Read-only privileges to bbb-proj-s3
+    policies:
+    - p, proj:bbb-proj-s3:read-only, applications, get, bbb-proj-s3/*, allow
+    groups:
+    - cd27ab64-739a-424d-a8f7-f9d6316a885b

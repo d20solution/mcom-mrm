@@ -12,8 +12,17 @@ spec:
 
   destinations:
   - namespace: 'aaa'
-    server: '*'
+    server: 'https://kubernetes.default.svc'
 
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
+
+  roles:
+  - name: read-only
+    description: Read-only privileges to aaa-proj-s3
+    policies:
+    - p, proj:aaa-proj-s3:read-only, applications, get, aaa-proj-s3/*, allow
+    groups:
+    - af374b7d-bc8a-4268-b61d-6453dfaac476
+

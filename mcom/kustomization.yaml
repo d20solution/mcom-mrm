@@ -1,5 +1,3 @@
-namePrefix: kustomize-
-
 resources:
 - proj/aaa/aaa-proj.yaml
 - proj/bbb/bbb-proj.yaml
