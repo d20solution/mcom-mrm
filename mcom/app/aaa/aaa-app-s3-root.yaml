@@ -18,18 +18,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
-spec:
-  destination:
-    namespace: aaa
-    server: https://kubernetes.default.svc
-  project: aaa-proj-s3
-  source:
-    path: s3
-    repoURL: https://github.com/d20solution/aaa-root.git
-    targetRevision: HEAD
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-
