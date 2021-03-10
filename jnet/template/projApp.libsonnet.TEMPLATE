@@ -1,0 +1,92 @@
+{
+
+  clientName:: error "serviceName must be specified",
+  clientNamespace:: ["argocd",],
+  clientADGroup:: [],
+  clientProjname:: $.clientName + '-proj',
+  clientRootname:: $.clientName + '-root',
+  clientRootapprepo:: {},
+
+  clientDestination+:: [
+    { namespace: x, server: "https://kubernetes.default.svc" }, for x in $.clientNamespace
+  ],
+
+  clientRwl+:: [
+    { group: x, kind: "*" }, for x in $.clientNamespace
+  ],
+
+  clientNSwl+:: [
+    { group: x, kind: "*" }, for x in $.clientNamespace
+  ],
+
+
+
+  local appProj = {
+    apiVersion: "argoproj.io/v1alpha1",
+    kind: "AppProject",
+    metadata: {
+      name: $.clientProjname,
+      namespace: "argocd",
+      annotations: {
+        'argocd.argoproj.io/sync-wave': "-50",
+      },
+      finalizers: [
+        'resources-finalizer.argocd.argoproj.io',
+      ],
+    },
+    spec: {
+       description: $.clientName + 'Project Spec',
+       sourceRepos: [
+          "*",
+       ],
+       destinations: std.manifestJson($.clientDestination),
+       clusterResourceWhitelist: std.manifestJson($.clientRwl),
+       namespaceResourceWhitelist: std.manifestJson($.clientNSwl),
+       roles: [
+          {
+             name: "read-only",
+             description: "Read-only privileges",
+             "policies": [
+               'p, proj:' + $.clientProjname + ':read-only, applications, get, ' + $.clientProjname + '/*, allow',
+             ],
+             "groups": std.manifestJson($.clientADGroup),
+          },
+       ],
+    },
+  },
+
+  local appRoot = {
+    apiVersion: "argoproj.io/v1alpha1",
+    kind: "Application",
+    metadata: {
+      name: $.clientRootname,
+      namespace: "argocd",
+      annotations: {
+        'argocd.argoproj.io/sync-wave': "-30",
+      },
+      finalizers: [
+        'resources-finalizer.argocd.argoproj.io',
+      ],
+    },
+
+    spec: {
+      destination: {
+        namespace: "aaa",
+        server: "https://kubernetes.default.svc",
+      },
+      project: $.clientProjname,
+      source: std.manifestJson($.clientRootapprepo),
+      syncPolicy: {
+        automated: {
+          prune: true,
+          selfHeal: true,
+        },
+      },
+    },
+  },
+
+
+  apiVersion: "v1",
+  kind: "List",
+  items: [appProj, appRoot],
+}
