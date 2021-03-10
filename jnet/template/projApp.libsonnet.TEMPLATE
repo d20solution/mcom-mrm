@@ -39,9 +39,12 @@
        sourceRepos: [
           "*",
        ],
-       destinations: std.manifestJson($.clientDestination),
-       clusterResourceWhitelist: std.manifestJson($.clientRwl),
-       namespaceResourceWhitelist: std.manifestJson($.clientNSwl),
+//       destinations: std.manifestJson($.clientDestination),
+//       clusterResourceWhitelist: std.manifestJson($.clientRwl),
+//       namespaceResourceWhitelist: std.manifestJson($.clientNSwl),
+       destinations: $.clientDestination,
+       clusterResourceWhitelist: $.clientRwl,
+       namespaceResourceWhitelist: $.clientNSwl,
        roles: [
           {
              name: "read-only",
@@ -49,7 +52,7 @@
              "policies": [
                'p, proj:' + $.clientProjname + ':read-only, applications, get, ' + $.clientProjname + '/*, allow',
              ],
-             "groups": std.manifestJson($.clientADGroup),
+             "groups": $.clientADGroup,
           },
        ],
     },
@@ -70,12 +73,9 @@
     },
 
     spec: {
-      destination: {
-        namespace: "aaa",
-        server: "https://kubernetes.default.svc",
-      },
+      destination: $.clientDestination[1],
       project: $.clientProjname,
-      source: std.manifestJson($.clientRootapprepo),
+      source: $.clientRootapprepo,
       syncPolicy: {
         automated: {
           prune: true,
