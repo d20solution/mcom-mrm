@@ -11,9 +11,9 @@
     { namespace: x, server: "https://kubernetes.default.svc" }, for x in $.clientNamespace
   ],
 
-  clientRwl+:: [
-    { group: x, kind: "*" }, for x in $.clientNamespace
-  ],
+//  clientRwl+:: [
+//    { group: x, kind: "*" }, for x in $.clientNamespace
+//  ],
 
   clientNSwl+:: [
     { group: x, kind: "*" }, for x in $.clientNamespace
@@ -40,7 +40,7 @@
           "*",
        ],
        destinations: $.clientDestination,
-       clusterResourceWhitelist: $.clientRwl,
+//       clusterResourceWhitelist: $.clientRwl,
        clusterResourceWhitelist: [
           {
              group: "*",
