@@ -35,15 +35,18 @@
       ],
     },
     spec: {
-       description: $.clientName + 'Project Spec',
+       description: $.clientName + ' Project Spec',
        sourceRepos: [
           "*",
        ],
-//       destinations: std.manifestJson($.clientDestination),
-//       clusterResourceWhitelist: std.manifestJson($.clientRwl),
-//       namespaceResourceWhitelist: std.manifestJson($.clientNSwl),
        destinations: $.clientDestination,
        clusterResourceWhitelist: $.clientRwl,
+       clusterResourceWhitelist: [
+          {
+             group: "*",
+             kind: "*"
+          },
+       ],
        namespaceResourceWhitelist: $.clientNSwl,
        roles: [
           {
